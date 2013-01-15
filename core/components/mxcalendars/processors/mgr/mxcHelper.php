@@ -21,6 +21,8 @@ function tstamptotime($ISO8601,$tstamp=null,$mergeTime=false) {
 
 //-- Make reoccuring event list
 function _getRepeatDates($frequencymode=0, $interval=1, $frequency='1',$startDate = null, $endDate = null,$onwd=array(0,1,2,3,4,5,6),$occType = 'UNIX'){
+    //-- Enable the debugger (Manager)
+    $debug = false;
     // Lets check the timezone setting so that our date functions return correct dates for location
     if(date_default_timezone_get() != 'UTC'){
         $curTZ = date_default_timezone_get();
@@ -46,8 +48,6 @@ function _getRepeatDates($frequencymode=0, $interval=1, $frequency='1',$startDat
     //$endDate = '2010-06-11 19:30:00';
     //-- Holder of all events
     $ar_Recur = array();
-    //-- Enable the debugger (Manager)
-    $debug = false;
 
     $theParameter = array('MODE'=>$frequencymode, 'interval'=>$interval, 'frequency'=>$frequency, 'StartDate'=>$startDate, 'EndDate'=>$endDate, 'OnWeedkDay'=>$onwd);
     if($debug){
@@ -103,10 +103,10 @@ function _getRepeatDates($frequencymode=0, $interval=1, $frequency='1',$startDat
                     $curWeek= strftime('%W',strtotime($occurance));
 
                     //-- Get occurance day of week int
-                    $thisDOW = strftime('%w',strtotime("next day",strtotime($occurance)));
+                    $thisDOW = strftime('%w',strtotime($occurance));
 
                     //-- Get the valid date formated of occurance
-                    $occDate = strftime('%Y-%m-%d', strtotime("next day",strtotime($occurance))).$originalTime;
+                    $occDate = strftime('%Y-%m-%d', strtotime($occurance)).$originalTime;
 
                     //-- Check if the date is one of the assigned and less than the end date
                     if(in_array($thisDOW, $onwd) && $curWeek == $startWeek && strtotime($occDate) < strtotime($nextWeek) && strtotime($occDate) > strtotime($startDate)){
